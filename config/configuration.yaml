@@ -1,0 +1,60 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Include external config files
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+http:
+  server_port: 8123
+#  ssl_certificate: /certs/fullchain.pem
+#  ssl_key: /certs/privkey.pem
+
+# Proxy config
+  use_x_forwarded_for: true
+  trusted_proxies: !include proxies.yaml
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# MariaDB
+recorder:
+  db_url: !secret mariadb
+  purge_keep_days: 3
+  auto_purge: true
+  commit_interval: 60
+  include:
+    domains:
+      - sensor
+      - binary_sensor
+      - switch
+      - automation
+      - light
+      - media_player
+      - updater
+
+# influxDB
+#influxdb:
+#  host: homeassistant_history
+#  port: 8086
+#  database: homeassistant
+#  username: homeassistant
+#  password: !secret influxdb_password
+#  max_retries: 5
+#  default_measurement: state
+#  include:
+#    domains:
+#      - switch
+#      - light
+#      - sensor
+#      - binary_sensor
+#      - device_tracker
+#  exclude:
+#    entities:
+#      - sensor.icloud3_event_log

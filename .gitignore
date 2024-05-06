@@ -1,0 +1,15 @@
+# Example .gitignore file for your config dir.
+# An * ensures that everything will be ignored except YAML files.
+*
+!*.yaml
+!config/*.yaml
+!.gitignore
+
+
+#.env
+#config/secrets.yaml
+#nodered/*
+#mariadb/*
+#config/*.log
+#config/image/*
+#config/.*
