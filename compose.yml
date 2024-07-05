@@ -7,11 +7,10 @@ services:
       - mariadb
 #      - influxdb
     restart: unless-stopped
-    ports:
-      - 8123:8123
+    # ports:
+    #   - 8123:8123
     volumes:
       - ./config:/config
-#      - ${CERT_PATH}:/config/certs
       - /etc/localtime:/etc/localtime:ro
 #    devices:
 #      - /dev/ttyACM0
@@ -21,6 +20,8 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
+      homeassistant:
+      mqtt:
       proxy:
     labels:
       - "traefik.enable=true"
@@ -44,21 +45,21 @@ services:
 #      - "8086:8086"
 #      - "8083:8083"
 #    volumes:
-#      - ./infuxdb:/var/lib/influxdb
+#      - ./influxdb:/var/lib/influxdb
 #      - /etc/localtime:/etc/localtime:ro
 #    environment:
 #      INFLUXDB_DB: homeassistant
 #      INFLUXDB_USER: homeassistant
 #      INFLUXDB_USER_PASSWORD: ${INFLUXDB_USER_PASSWORD}
 #    networks:
-#      proxy:
+#      homeassistant:
 
   mariadb:
     container_name: homeassistant_recorder
     image: mariadb:latest
     restart: unless-stopped
-    ports:
-      - 3306:3306
+    # ports:
+    #   - 3306:3306
     environment:
       - MYSQL_USER=homeassistant
       - MYSQL_DATABASE=homeassistant
@@ -69,7 +70,7 @@ services:
 #      - ./mariadb/my.cnf:/etc/mysql/my.cnf:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
-      proxy:
+      homeassistant:
 
 #  adminer:
 #    container_name: homeassistant_recorder_mgmt
@@ -78,32 +79,11 @@ services:
 #    ports:
 #      - 8280:8080
 #    networks:
-#      proxy:
-
-#  nodered:
-#    container_name: nodered
-#    image: nodered/node-red
-#    restart: unless-stopped
-#    ports:
-#      - 1880:1880
-#    volumes:
-#      - ./nodered:/data
-#    depends_on:
-#      - homeassistant
-#      - mosquitto
-
-#  mosquitto:
-#    container_name: mosquitto
-#    image: eclipse-mosquitto
-#    restart: unless-stopped
-#    ports:
-#      - 1883:1883
-#    volumes:
-#      - ./mosquitto/config:/mosquitto/config
-#      - ./mosquitto/data:/mosquitto/data
-#      - ./mosquitto/log:/mosquitto/log
-#      - /etc/localtime:/etc/localtime:ro
+#      homeassistant:
 
 networks:
+  homeassistant:
+  mqtt:
+    external: true
   proxy:
     external: true

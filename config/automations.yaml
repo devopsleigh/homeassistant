@@ -1,1 +1,21 @@
-[]
+- id: '1717301680541'
+  alias: New automation
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: cfee6cf74fbf2bc77669acc3a013ffcd
+    entity_id: c16b836f6aff43cb00def2d020ed9f24
+    domain: sensor
+    above: 8
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  condition: []
+  action:
+  - device_id: 9b8c469babbb49a5088fdafb45b738e0
+    domain: mobile_app
+    type: notify
+    message: CPAP on
+  mode: single

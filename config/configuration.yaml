@@ -12,6 +12,12 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+logger:
+  default: warning
+  logs:
+    homeassistant.components.homekit: debug
+    pyhap: debug
+
 http:
   server_port: 8123
 #  ssl_certificate: /certs/fullchain.pem
