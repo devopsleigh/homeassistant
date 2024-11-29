@@ -14,9 +14,9 @@ scene: !include scenes.yaml
 
 logger:
   default: warning
-  logs:
-    homeassistant.components.homekit: debug
-    pyhap: debug
+  # logs:
+  #   homeassistant.components.homekit: debug
+  #   pyhap: debug
 
 http:
   server_port: 8123
@@ -46,21 +46,21 @@ recorder:
       - updater
 
 # influxDB
-#influxdb:
-#  host: homeassistant_history
-#  port: 8086
-#  database: homeassistant
-#  username: homeassistant
-#  password: !secret influxdb_password
-#  max_retries: 5
-#  default_measurement: state
-#  include:
-#    domains:
-#      - switch
-#      - light
-#      - sensor
-#      - binary_sensor
-#      - device_tracker
-#  exclude:
-#    entities:
-#      - sensor.icloud3_event_log
+# influxdb:
+#   host: homeassistant_history
+#   port: 8086
+#   database: homeassistant
+#   username: homeassistant
+#   password: !secret influxdb_password
+#   max_retries: 5
+#   default_measurement: state
+#   include:
+#     domains:
+#       - switch
+#       - light
+#       - sensor
+#       - binary_sensor
+#       - device_tracker
+#   exclude:
+#     entities:
+#       - sensor.icloud3_event_log
