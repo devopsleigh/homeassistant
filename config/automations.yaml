@@ -1,21 +1,79 @@
-- id: '1717301680541'
-  alias: New automation
-  description: ''
+- id: '1722938796206'
+  alias: Change Detection
+  description: Send Change Detection persistent notifications to my phone
   trigger:
-  - type: power
-    platform: device
-    device_id: cfee6cf74fbf2bc77669acc3a013ffcd
-    entity_id: c16b836f6aff43cb00def2d020ed9f24
-    domain: sensor
-    above: 8
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 30
+  - platform: persistent_notification
+    update_type:
+    - added
+    - updated
+    notification_id: changedetection
   condition: []
   action:
-  - device_id: 9b8c469babbb49a5088fdafb45b738e0
-    domain: mobile_app
-    type: notify
-    message: CPAP on
+  - metadata: {}
+    data:
+      message: '{{trigger[''notification''][''message'']}}'
+      title: '{{trigger[''notification''][''title'']}}'
+    action: notify.mobile_app_ls_phone
+  - metadata: {}
+    data:
+      notification_id: changedetection
+    enabled: false
+    action: persistent_notification.dismiss
+  mode: single
+- id: '1723110324011'
+  alias: Watchtower webhook
+  description: ''
+  trigger:
+  - platform: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: true
+    webhook_id: watchtower
+  condition: []
+  action:
+  - service: notify.mobile_app_leighs_phone
+    metadata: {}
+    data:
+      message: Watchtower has found containers to update
+  mode: single
+- id: '1723341556553'
+  alias: Roborock dock mop water empty
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.roborock_q_revo_dock_error
+    - sensor.roborock_q_revo_vacuum_error
+    from: ok
+  condition: []
+  action:
+  - action: notify.mobile_app_ls_phone
+    metadata: {}
+    data:
+      message: 'Vaccuum state: {{ states(''sensor.roborock_q_revo_vacuum_error'')
+        }}
+
+        Dock state: {{ states(''sensor.roborock_q_revo_dock_error'') }}
+
+        '
+  mode: single
+- id: '1728737067240'
+  alias: Node-RED Notifications
+  description: ''
+  triggers:
+  - trigger: mqtt
+    topic: homeassistant/notify
+  conditions: []
+  actions:
+  - metadata: {}
+    data:
+      title: '{{ trigger.payload_json.title }}'
+      message: '{{ trigger.payload_json.message }}'
+    action: notify.mobile_app_ls_phone
+  - metadata: {}
+    data:
+      notification_id: mqtt
+    enabled: false
+    action: persistent_notification.dismiss
   mode: single
